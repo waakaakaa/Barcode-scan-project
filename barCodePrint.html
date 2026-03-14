@@ -1,0 +1,130 @@
+  <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="hiprint,一个可以跨平台windows,mac,linux运行的js打印插件,打印自动分页">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>hiprint.io</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet">
+    <script src="Content/jquery.js"></script>
+    <script src="Content/hiprint/hiprint.bundle.js"></script>
+    <script src="Content/hiprint/polyfill.min.js"></script>
+    <script src="Content/hiprint/plugins/jquery.hiwprint.js"></script>
+    <script src="Content/hiprint/plugins/JsBarcode.all.min.js"></script>
+</head>
+<body>
+    <div class="wrapper" style="margin-top:50px;">
+        <link href="Content/hiprint/css/hiprint.css" rel="stylesheet" />
+        <link href="Content/hiprint/css/print-lock.css" rel="stylesheet" />
+        <link media="print" href="Content/hiprint/css/print-lock.css" rel="stylesheet" />
+        <layout class="layout hinnn-layout hinnn-layout-has-sider height-100-per" style="background:#fff;">
+            <content class="hinnn-layout-content" style="border-left:1px solid #e8e8e8;">
+                <div class="container-fluid height-100-per print-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h1 class="page-header">条码打印</h1>
+                            <p class="simpaleExplain">1.传入模板json 设置条码打印模板</p>
+
+                            <textarea class="form-control" rows="15" id="barcodeJson1">
+                            {
+                                  "panels": [
+                                    {
+                                      "index": 0,
+                                      "height": 30,
+                                      "width": 100,
+                                      "paperHeader": 0,
+                                      "paperFooter": 0,
+                                      "printElements": [
+                                        {
+                                          "options": {
+                                            "left": 7.5,
+                                            "top": 9,
+                                            "height": 15,
+                                            "width": 127.5,
+                                            "field": "product",
+                                            "testData": "加多老吉茶 100889",
+                                            "hideTitle": true
+                                          },
+                                          "printElementType": {
+                                            "title": "文本",
+                                            "type": "text"
+                                          }
+                                        },
+                                        {
+                                          "options": {
+                                            "left": 220,
+                                            "top": 10,
+                                            "height": 40,
+                                            "width": 13.5,
+                                            "field": "ptype",
+                                            "fontSize": 18,
+                                            "lineHeight": 18,
+                                            "testData": "酒水",
+                                            "hideTitle": true
+                                          },
+                                          "printElementType": {
+                                            "title": "文本",
+                                            "type": "text"
+                                          }
+                                        },
+                                        {
+                                          "options": {
+                                            "left": 7.5,
+                                            "top": 0,
+                                            "height": 60,
+                                            "width": 200,
+                                            "field": "code",
+                                            "fontSize": 18,
+                                            "lineHeight": 18,
+                                            "testData": "TY1000889",
+                                            "textAlign": "center",
+                                            "textType": "barcode"
+                                          },
+                                          "printElementType": {
+                                            "title": "文本",
+                                            "type": "text"
+                                          }
+                                        }
+                                      ],
+                                      "paperNumberLeft": 0,
+                                      "paperNumberTop": 0,
+                                      "paperNumberDisabled": true
+                                    }
+                                  ]
+                                }
+                            </textarea>
+
+                            <div id="hiprint-printTemplate" class="hiprint-printTemplate" style="margin-top:10px;"></div>
+
+                            <div style="padding:15px 0;">
+                                <button type="button" class="btn btn-danger" id="print1">打印</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Content>
+        </layout>
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            //初始化打印插件
+            hiprint.init();
+            var hiprintTemplate = new hiprint.PrintTemplate({
+                template: JSON.parse($('#barcodeJson1').val()),
+                settingContainer: '#PrintElementOptionSetting'
+            });
+            //打印设计
+            hiprintTemplate.design('#hiprint-printTemplate');
+            $('#print1').click(function () {
+                // hiprintTemplate.print({ product: '中国好凉茶', ptype: '凉茶', code: '10086754' });
+                hiprintTemplate.print({ ptype: '氢溴酸', code: 'TY2005596' });
+            });
+        });
+    </script>
+</body>
+</html>
